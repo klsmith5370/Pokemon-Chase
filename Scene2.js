@@ -11,60 +11,74 @@ class Scene2 extends Phaser.Scene {
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background'); // if you want the background image to move
         this.background.setOrigin(0,0);
 
-        this.pikachu = this.add.image(config.width/2 - 50, config.height/2, "pikachu");
-        this.pikachu.setScale(.2);
+        this.pokeball = this.add.image(config.width/2 - 100, config.height/2, "pokeball");
+        this.pokeball.setScale(.2)
 
-        // this.pokeball = this.add.image(config.width/2 - 50, config.height/2, "pokeball");
-        // this.pokeball.setScale(.1);
+        this.greatball = this.add.image(config.width/2 - 50, config.height/2, "greatball");
+        this.greatball.setScale(.2)
+
+        this.ultraball = this.add.image(config.width/2, config.height/2, "ultraball");
+        this.ultraball.setScale(.2)
+
+        this.masterball = this.add.image(config.width/2 + 50, config.height/2, "masterball");
+        this.masterball.setScale(.2)
+
+        // this.player = this.add.sprite(config.width/2 - 50, config.height/2, "player");
+        this.player = this.physics.add.sprite(config.width/2 - 8, config.height - 64, "player");
+        this.player.play("right");
+        this.player.play("left");
+        this.player.setScale(.2);
+
+        this.cursorKeys = this.input.keyboard.createCursorKeys();
+
+        this.cursor = this.input.keyboard.createCursorKeys();
+
         // after adding in spritesheets, image can be changed to sprite so they can be used with animations
-
-        // this.anims.create({
-        //     key:"pokeball",
-        //     frames: this.anims.generateFrameNumbers("pokeball", {
-        //         start: 0,
-        //         end: 1
-        //     }),
-        //     frameRate: 10,
-        //     repeat: -1
-        // });
-
-        // this.pokeballs = this.physics.add.group();
-
-        // let maxPokeballs = 10;
-        // for(let i = 0; i <= maxPokeballs; i++) {
-        //     let pokeball = this.physics.add.image(.2, .2, "pokeball");
-        //     this.pokeballs.add(pokeball);
-        //     pokeball.setRandomPosition(0, 0, config.width/2 , config.height/2); 
-        // }
-
-        // this.pokeball = this.physics.add.group({
-        //     key: "pokeball",
-        //     repeat: 5,
-        //     setXY: { x: 12, y: 0, stepX: 70 }
-        // });
-        // this.pokeball.children.iterate(function (child) {
-        //     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
-        // })
 
         this.add.text(20, 20, "Welcome to Flying Pikachu!", {font: "25px Arial", fill: "black"});
     }
 
-    movePikachu(pikachu, speed) {
-        pikachu.x += speed;
-        if (pikachu.x > config.height) {
-            this.resetPikachuPosition(pikachu);
+    moveBall1(ball, speed) {
+        ball.x += speed;
+        if(ball.x > config.height) {
+            this.resetBallPosition2(ball);
         }
     }
 
-    resetPikachuPosition(pikachu) {
-        pikachu.x = 0;
+    moveBall2(ball, speed) {
+        ball.y += speed;
+        if(ball.y > config.height) {
+            this.resetBallPosition1(ball);
+        }
+    }
+
+    resetBallPosition1(ball) {
+        ball.y = 0;
         let randomX = Phaser.Math.Between(0, config.width);
-        pikachu.y = randomX;
+        ball.x = randomX;
+    }
+
+    resetBallPosition2(ball) {
+        ball.x = 0;
+        let randomY = Phaser.Math.Between(0, config.width);
+        ball.y = randomY; 
     }
 
     update() {
-        this.movePikachu(this.pikachu, 3)
+        this.moveBall1(this.pokeball, 2);
+        this.moveBall2(this.greatball, 2);
+        this.moveBall1(this.ultraball, 3);
+        this.moveBall2(this.masterball, 3);
 
-        this.background.tilePositionX += 1; // this creates the position
+        this.background.tilePositionX += 1; // this creates the position of the background and how it moves
+
     }
+
+    movePlayerManager(){
+        if(this.cursorKeys.left.isDown){
+            this.player.setVelocityX(-gameSettings.playerSpeed);
+        } else if (this.cursorKeys.right.isDown){
+            this.player.setVelocityX(gameSettings.playerSpeed);
+        }
+    }; // this will control the player iconif(this.cursorKeys.left.isDown)
 }

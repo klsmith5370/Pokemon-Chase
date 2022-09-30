@@ -11,8 +11,15 @@ class Scene1 extends Phaser.Scene {
 
     preload() {
         this.load.image("background", "assets/pokemon-background-day.png");
-        this.load.spritesheet("pikachu", "assets/flying-pikachu.png")
-        this.load.image("pokeball", "assets/pokeball.png")
+        this.load.image("pokeball", "assets/pokeball.png");
+        this.load.image("greatball", "assets/great-ball.png");
+        this.load.image("ultraball", "assets/ultra-ball.png");
+        this.load.image("masterball", "assets/master-ball.png");
+
+        this.load.spritesheet("player", "assets/flying-pikachu.png", {
+            frameWidth: 325,
+            frameHeight: 410
+        });
     } 
     // once I have spritesheets figured out, you can replace image with spritesheet and update the link with assets/spritesheets
     // also define the size of the frame in pixels (frameWidth and frameHeight)
@@ -20,5 +27,20 @@ class Scene1 extends Phaser.Scene {
     create() { // write the function create within the class
         this.add.text(20, 20, "Loading game..."); // specify the x and y axis and the text to display
         this.scene.start("playGame"); // switching to scene 2
+
+        this.anims.create({
+            key: "right",
+            frames: this.anims.generateFrameNumbers("player"),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key:"left",
+            frames: this.anims.generateFrameNumbers("player"),
+            frameRate: 10,
+            repeat: -1
+        });
+
     }
 }

@@ -1,5 +1,10 @@
 // describes the configurations/basic characteristics of the game screen, such as dimensions or background color
 // pass the config varible as a parameter to the Phaser game instance
+
+let gameSettings = {
+    playerSpeed: 200,
+}
+
 let config = {
     width: 705,
     height: 304,
