@@ -25,15 +25,11 @@ class Scene1 extends Phaser.Scene {
 
     create() { // write the function create within the class
         this.add.text(20, 20, "Loading game..."); // specify the x and y axis and the text to display
-        // this.scene.start("gameScreen");
-        this.scene.start("playGame"); // switching to scene 2
 
-        this.anims.create({
-            key: "move",
-            frames: this.anims.generateFrameNumbers("player"),
-            frameRate: 10,
-            repeat: -1
-        });
+        setTimeout(() => {
+            this.scene.start("playGame"); // switching to scene 2
+        }, 2000)
 
+    
     }
 }

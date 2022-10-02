@@ -29,19 +29,42 @@ class Scene2 extends Phaser.Scene {
 
 
         // PLAYER 
-        // this.player = this.add.sprite(config.width/2 - 50, config.height/2, "player");
         this.player = this.physics.add.sprite(config.width/2 - 8, config.height - 64, "player");
         this.player.play("move");
         this.player.setCollideWorldBounds(true);
         this.player.setScale(.2);
 
+        this.anims.create({
+            key: "move",
+            frames: this.anims.generateFrameNumbers("player"),
+            frameRate: 10,
+            repeat: -1
+        });
+        
+        // KEYBOARD INPUT
         this.cursorKeys = this.input.keyboard.createCursorKeys();
 
-        // this.scoreText = this.add.text(16, 16, "score: 0", { font: "20px Helvetica", fill: "black" });
 
-        this.add.text(20, 20, "Welcome to Pokemon Catch!", {font: "20px Helvetica", fill: "yellow", align: "right" });
+
+        // COLLISIONS(collect)
+        // this.physics.add.collider(this.pokeball, this.player);
+        // this.physics.add.collider(this.greatball, this.player);
+        // this.physics.add.collider(this.ultraball, this.player);
+        // this.physics.add.collider(this.masterball, this.player);
+
+        // checking to see if player overlaps with the balls to collect
+        this.physics.add.overlap(this.player, this.pokeball, this.collect, null);
+        this.physics.add.overlap(this.player, this.greatball);
+        this.physics.add.overlap(this.player, this.ultraball);
+        this.physics.add.overlap(this.player, this.masterball);
+        
+        // SCORE
+        this.score = 0;
+        this.scoreLabel = this.add.text(20, 20, "Score:", { font: "20px Helvetica", fill: "black" })
+        
     }
 
+    // creating different balls on different planes
     moveBall1(ball, speed) {
         ball.x += speed;
         if(ball.x > config.height) {
@@ -56,6 +79,7 @@ class Scene2 extends Phaser.Scene {
         }
     }
 
+    // resets the balls positions randomly
     resetBallPosition1(ball) {
         ball.y = 0;
         let randomX = Phaser.Math.Between(0, config.width);
@@ -66,6 +90,15 @@ class Scene2 extends Phaser.Scene {
         ball.x = 0;
         let randomY = Phaser.Math.Between(0, config.width);
         ball.y = randomY; 
+    }
+
+    // a function to keep track of the score when balls are collected
+    collect(ball) {
+        ball.disableBody(true, true);
+
+        this.score += 10;
+        this.scoreLabel.setText('Score:' + this.score);
+
     }
 
     update() {
@@ -82,12 +115,14 @@ class Scene2 extends Phaser.Scene {
 
     // this will control the player icon
     movePlayerManager(){
+        // left and right arrow keys
         if(this.cursorKeys.left.isDown){
             this.player.setVelocityX(-gameSettings.playerSpeed);
         } else if (this.cursorKeys.right.isDown) {
             this.player.setVelocityX(gameSettings.playerSpeed);
         }
 
+        // up and down arrow keys
         if(this.cursorKeys.up.isDown) {
             this.player.setVelocityY(-gameSettings.playerSpeed);
         } else if (this.cursorKeys.down.isDown) {
