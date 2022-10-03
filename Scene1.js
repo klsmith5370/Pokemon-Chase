@@ -19,6 +19,11 @@ class Scene1 extends Phaser.Scene {
             frameWidth: 325,
             frameHeight: 410
         });
+
+        // this.load.spritesheet("ball", "assets/pokeball-range.png", {
+        //     frameWidth: 16, 
+        //     frameHeight: 16,
+        // })
     } 
     // once I have spritesheets figured out, you can replace image with spritesheet and update the link with assets/spritesheets
     // also define the size of the frame in pixels (frameWidth and frameHeight)

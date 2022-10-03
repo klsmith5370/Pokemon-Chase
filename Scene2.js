@@ -15,48 +15,86 @@ class Scene2 extends Phaser.Scene {
         this.background.setOrigin(0,0);
         
         // adding in pokeballs to catch
-        this.pokeball = this.add.image(config.width/2 - 100, config.height/2, "pokeball");
+        this.pokeball = this.add.sprite(config.width/2 - 100, config.height/2, "pokeball");
         this.pokeball.setScale(.2)
 
-        this.greatball = this.add.image(config.width/2 - 50, config.height/2, "greatball");
+        this.greatball = this.add.sprite(config.width/2 - 50, config.height/2, "greatball");
         this.greatball.setScale(.2)
 
-        this.ultraball = this.add.image(config.width/2, config.height/2, "ultraball");
+        this.ultraball = this.add.sprite(config.width/2, config.height/2, "ultraball");
         this.ultraball.setScale(.2)
 
-        this.masterball = this.add.image(config.width/2 + 50, config.height/2, "masterball");
+        this.masterball = this.add.sprite(config.width/2 + 50, config.height/2, "masterball");
         this.masterball.setScale(.2)
+
+        // this.anims.create({
+        //     key:"pokeball",
+        //     frames: this.anims.generateFrameNumbers("ball"),
+        //     frameRate: 10,
+        //     repeat: -1
+        // });
+
+        // this.anims.create({
+        //     key: "greatball",
+        //     frames: this.anims.generateFrameNumbers("ball"),
+        //     frameRate: 10,
+        //     repeat: -1
+        // });
+
+        // this.anims.create({
+        //     key:"ultraball",
+        //     frames: this.anims.generateFrameNumbers("ball"),
+        //     frameRate: 10,
+        //     repeat: -1
+        // });
+
+        // this.anims.create({
+        //     key: "masterball",
+        //     frames: this.anims.generateFrameNumbers("ball"),
+        //     frameRate: 10,
+        //     repeat: -1
+        // });
+
+        // this.balls = this.physics.add.group();
+        // let maxBalls = 4;
+        // for(let i = 0; i <= maxBalls; i++) {
+        //     let ball = this.physics.add.sprite(16, 16, "ball");
+        //     this.balls.add(ball);
+        //     ball.setRandomPosition(0, 0, config.width, config.height);
+
+        //     // this.pokeball.setVelocity(100, 100);
+        //     ball.setCollideWorldBounds(true);
+        // }
 
 
         // PLAYER 
         this.player = this.physics.add.sprite(config.width/2 - 8, config.height - 64, "player");
-        this.player.play("move");
+        // this.player.play("move");
         this.player.setCollideWorldBounds(true);
         this.player.setScale(.2);
 
-        this.anims.create({
-            key: "move",
-            frames: this.anims.generateFrameNumbers("player"),
-            frameRate: 10,
-            repeat: -1
-        });
+        // this.anims.create({
+        //     key: "move",
+        //     frames: this.anims.generateFrameNumbers("player"),
+        //     frameRate: 10,
+        //     repeat: -1
+        // });
         
         // KEYBOARD INPUT
         this.cursorKeys = this.input.keyboard.createCursorKeys();
 
 
-
         // COLLISIONS(collect)
-        // this.physics.add.collider(this.pokeball, this.player);
+        this.physics.add.collider(this.pokeball, this.player);
         // this.physics.add.collider(this.greatball, this.player);
         // this.physics.add.collider(this.ultraball, this.player);
         // this.physics.add.collider(this.masterball, this.player);
 
         // checking to see if player overlaps with the balls to collect
-        this.physics.add.overlap(this.player, this.pokeball, this.collect, null);
-        this.physics.add.overlap(this.player, this.greatball);
-        this.physics.add.overlap(this.player, this.ultraball);
-        this.physics.add.overlap(this.player, this.masterball);
+        this.physics.add.overlap(this.player, this.pokeball, this.collectPokeBall, null);
+        // this.physics.add.overlap(this.player, this.greatball);
+        // this.physics.add.overlap(this.player, this.ultraball);
+        // this.physics.add.overlap(this.player, this.masterball);
         
         // SCORE
         this.score = 0;
@@ -77,6 +115,7 @@ class Scene2 extends Phaser.Scene {
         if(ball.y > config.height) {
             this.resetBallPosition1(ball);
         }
+
     }
 
     // resets the balls positions randomly
@@ -93,11 +132,12 @@ class Scene2 extends Phaser.Scene {
     }
 
     // a function to keep track of the score when balls are collected
-    collect(ball) {
+    collect(player, ball) {
         ball.disableBody(true, true);
 
         this.score += 10;
         this.scoreLabel.setText('Score:' + this.score);
+
 
     }
 
@@ -108,6 +148,8 @@ class Scene2 extends Phaser.Scene {
         this.moveBall2(this.masterball, 3);
 
         this.movePlayerManager();
+
+        // this.collect(this.pokeball)
 
         this.background.tilePositionX += 1; // this creates the position of the background and how it moves
 

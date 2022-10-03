@@ -4,13 +4,14 @@
 
 let gameSettings = {
     playerSpeed: 200,
+    gameOver: false,
 }
 
 let config = {
     width: 705,
     height: 304,
     backgroundColor:0xfffed53f,
-    scene: [OpeningScene, Scene1, Scene2], // adding other scenes here (need to add opening scene)
+    scene: [OpeningScene, Scene1, Scene2], // adding other scenes here 
     pixelArt: true,
     physics: {
         default: "arcade",
@@ -18,7 +19,6 @@ let config = {
             debug: false
         }
     },
-    gameOver: false,
 }
 
 
